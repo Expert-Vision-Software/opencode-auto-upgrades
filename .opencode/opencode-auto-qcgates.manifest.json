@@ -1,0 +1,57 @@
+{
+  "version": "1.8.1",
+  "mode": "plugin",
+  "entry": "opencode-auto-qcgates@latest",
+  "configPath": "/home/diegohb/dev/projects/evs/opencode-auto-upgrades/.opencode/opencode.json",
+  "files": [
+    {
+      "path": "skills/regression-checking/SKILL.md",
+      "hash": "e676fcba96ae10a903da5efdddced4952cd13523a04b72a3da92a95b755766c5"
+    },
+    {
+      "path": "skills/test-baselining/refs/frontend-refs.md",
+      "hash": "ce4806e950f8a335779bcd2d2b5dc2594208aded691a23d3ad59c738d33af3d7"
+    },
+    {
+      "path": "skills/test-baselining/refs/source-controls.md",
+      "hash": "eb0313ff627565a0116df7a4ad383eb4809ff49bdca3dfcc4e03546cb18078cf"
+    },
+    {
+      "path": "skills/test-baselining/refs/backends-ref.md",
+      "hash": "793a2ba1f391cfdc94c30454a9ff07c336aa8841fffdaeac52bdd55dea02a846"
+    },
+    {
+      "path": "skills/test-baselining/templates/testing-protocol.md",
+      "hash": "a9a8e1c8422a354679265bf792434833937dbd3ee1fc3bd43071a765f099bd1b"
+    },
+    {
+      "path": "skills/test-baselining/templates/testing-baseline.xml",
+      "hash": "5cd3867b0ce0de47934cbaf058c08114395758335d216d9023f4e5cd49f50ffd"
+    },
+    {
+      "path": "skills/test-baselining/SKILL.md",
+      "hash": "4f4b6907307a9bd7f741c646b6cb13c8f215c9ecb6f3e921bad1c7ddc52cbba3"
+    },
+    {
+      "path": "commands/test-baseline.md",
+      "hash": "8efa275cd9c72b04e583fba5343a37ac49a0f09bf3ed1db19dff6f1aaf821011"
+    },
+    {
+      "path": "commands/regression-check.md",
+      "hash": "6b033be8be07621fa33c4bd24da95f6c0accf5438f2daa6e5207f5e2c4d738c3"
+    }
+  ],
+  "optionalDependencies": [
+    {
+      "id": "grilling",
+      "kind": "skill",
+      "description": "Interview loop for `/test-baseline init` when the consumer has no recognizable manifest or its tier set can't be inferred.",
+      "source": {
+        "type": "external-skill",
+        "repo": "mattpocock/skills",
+        "skill": "grilling"
+      },
+      "state": "pending"
+    }
+  ]
+}
