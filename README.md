@@ -10,6 +10,7 @@ Autonomous dependency upgrades usually mean either timid patch-only bumps or bli
 
 ## What you get 🧰
 
+- **`dependency-upgrade` skill, `/upgrade-deps` command, `upgrade-deps` agent** — `/upgrade-deps [tier] [--yolo] [--report]` is the entry point (tier: `safe` | `sensible` | `aggressive`, default `sensible`); the skill carries the full round workflow below
 - **Three upgrade tiers, selected per run**
   - **safe** — in-range updates only (patch + minor within declared ranges)
   - **sensible** — out-of-range minors pinned up within the same major; lands only with high confidence of zero functional changes
