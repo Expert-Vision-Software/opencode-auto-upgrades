@@ -1,0 +1,43 @@
+{
+  "name": "opencode-auto-upgrades",
+  "version": "0.1.0",
+  "description": "Baseline-gated dependency-upgrade rounds for TypeScript/JavaScript projects: the dependency-upgrade skill, /upgrade-deps command, and upgrade-deps agent, installed into an OpenCode scope by a manifest-tracked CLI.",
+  "content": "assets",
+  "type": "module",
+  "module": "index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "bin": {
+    "opencode-auto-upgrades": "src/cli.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Expert-Vision-Software/opencode-auto-upgrades.git"
+  },
+  "publisher": "Expert Vision Software",
+  "author": "Expert Vision Support <support@expertvision.software>",
+  "bugs": {
+    "url": "https://github.com/Expert-Vision-Software/opencode-auto-upgrades/issues",
+    "email": "support@expertvision.software"
+  },
+  "license": "MIT",
+  "files": [
+    "index.ts",
+    "src",
+    "skills",
+    "commands",
+    "agents"
+  ],
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "opencode-architect": "file:../opencode-architect"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.7.0"
+  }
+}

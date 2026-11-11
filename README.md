@@ -1,6 +1,6 @@
 # opencode-auto-upgrades
 
-[![OpenCode plugin](https://img.shields.io/badge/opencode-plugin-blueviolet)](https://opencode.ai/v2/docs/plugins) [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e)](LICENSE.md) [![Runtime](https://img.shields.io/badge/Runtime-Markdown--only-lightgrey)](#what-you-get-) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Expert-Vision-Software/opencode-auto-upgrades)
+[![npm version](https://img.shields.io/npm/v/opencode-auto-upgrades?color=cb3837&label=npm)](https://www.npmjs.com/package/opencode-auto-upgrades) [![Bun](https://img.shields.io/badge/Runtime-Bun-f9f1e1?logo=bun&logoColor=black)](https://bun.sh) [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e)](LICENSE.md) [![Platforms](https://img.shields.io/badge/Platforms-Linux%20%7C%20macOS%20%7C%20Windows-6366f1)](#install-) [![OpenCode plugin](https://img.shields.io/badge/opencode-plugin-blueviolet)](https://opencode.ai/v2/docs/plugins) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Expert-Vision-Software/opencode-auto-upgrades)
 
 Safe, sensible, and aggressive dependency upgrades for TypeScript/JavaScript codebases (npm, pnpm, Bun workspaces) — run as baseline-gated rounds by an OpenCode agent. 🚦
 
@@ -30,11 +30,32 @@ This package **hard-depends on the quality-gate skills `test-baselining` and `re
 bunx opencode-auto-qcgates@latest install --scope global
 ```
 
-The copies under `.opencode/skills/` in this repo are that dependency's vendored install for this dev checkout, not part of the deliverable.
+Install both packages in either order: the upgrade round checks for the two skills at start and prints exactly this remediation command if they are missing. The copies under `.opencode/skills/` in this repo are that dependency's vendored install for this dev checkout, not part of this package's payload.
 
 ## Install 🔌
 
-This is a Markdown-first package. Copy the dependency-upgrade skill, command, and agent definitions from `.opencode/` into your global `~/.config/opencode/` (or a project's `.opencode/`), then install the required quality-gate skills as shown above.
+The payload is Markdown only — a skill, a command, and an agent — installed into an OpenCode scope by the package's CLI (requires [Bun](https://bun.sh)):
+
+```bash
+# all projects (~/.config/opencode)
+bunx opencode-auto-upgrades@latest install --scope global
+
+# this project only (./.opencode)
+bunx opencode-auto-upgrades@latest install --scope local
+```
+
+`install` copies `skills/dependency-upgrade/` (including its `refs/`), `commands/upgrade-deps.md`, and `agents/upgrade-deps.md` into the chosen scope and records every file's SHA-256 in `opencode-auto-upgrades.manifest.json` beside the config. Re-running the same version is a zero-write no-op; when the payload changes with a new package version, `install` refreshes the copies.
+
+### Managing the install
+
+```bash
+bunx opencode-auto-upgrades@latest status              # what each scope holds, and which files you edited
+bunx opencode-auto-upgrades@latest status --online     # also check the latest published version
+bunx opencode-auto-upgrades@latest uninstall --scope local
+bunx opencode-auto-upgrades@latest clear-cache         # drop this package's copies from OpenCode's npm cache
+```
+
+Files you edit in place are skipped with a warning so your changes survive an upgrade — pass `--force` to take the packaged version back. `uninstall` removes only the paths this package's manifest lists, plus the manifest itself.
 
 ## Best time to use it ✅
 
@@ -44,7 +65,7 @@ This is a Markdown-first package. Copy the dependency-upgrade skill, command, an
 
 ## Contributing 🤝
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). No build, no dependencies — the whole repo is Markdown and configuration, so meaningful contributions are one good edit away.
+See [CONTRIBUTING.md](CONTRIBUTING.md). The payload is Markdown; the installer is a small TypeScript CLI verified with `bun test` and `bun run check`.
 
 ## License 📄
 
