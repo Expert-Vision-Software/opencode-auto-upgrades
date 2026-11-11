@@ -25,7 +25,7 @@ Payload lives at the package root because the installer copies repo-root `skills
 bun install          # links the local opencode-architect core dependency
 ```
 
-`package.json` depends on `opencode-architect` through a local `file:` spec — the installer's manifest and cache machinery comes from its `opencode-architect/core` subpath. That spec is for local development; publishing swaps it for the registry version.
+`package.json` depends on `opencode-architect` — the installer's manifest and cache machinery comes from its `opencode-architect/core` subpath. In the repo the dependency is normally a local `file:` spec, which `bun install` links to the sibling checkout; publishing swaps it for the registry version (`latest` or a semver range). The package-contract test accepts either form.
 
 ## Editing the payload
 

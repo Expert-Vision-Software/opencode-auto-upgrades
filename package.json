@@ -34,7 +34,7 @@
     "test": "bun test"
   },
   "dependencies": {
-    "opencode-architect": "file:../opencode-architect"
+    "opencode-architect": "latest"
   },
   "devDependencies": {
     "@types/bun": "latest",

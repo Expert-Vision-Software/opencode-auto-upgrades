@@ -1,4 +1,4 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugins": ["opencode-auto-qcgates@latest"]
+  "plugins": ["opencode-auto-qcgates@latest", "opencode-architect@latest"]
 }

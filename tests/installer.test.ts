@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test } from "bun:test";
+import { afterEach, describe, expect, spyOn, test } from "bun:test";
 import { exists, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -113,7 +113,10 @@ describe("install", () => {
     await install("local", projectDir, { mode: null, force: false });
     await writeFile(skillFile, "locally edited\n");
 
-    const skipped = await install("local", projectDir, { mode: null, force: false });
+    const warn = spyOn(console, "warn").mockImplementation(() => {});
+    const skipped = await install("local", projectDir, { mode: null, force: false }).finally(() =>
+      warn.mockRestore()
+    );
     expect(skipped.skippedModified).toEqual([skillFile]);
     expect(await readFile(skillFile, "utf-8")).toBe("locally edited\n");
 

@@ -65,9 +65,11 @@ describe("package manifest", () => {
     expect(parsed.scripts["test"]).toBe("bun test");
   });
 
-  test("depends on the core module through a local file spec", async () => {
+  test("depends on the core module, through a local file spec or the registry", async () => {
     const parsed = await manifest();
-    expect(parsed.dependencies["opencode-architect"]).toMatch(/^file:(\.\/|\.\.\/)/);
+    expect(parsed.dependencies["opencode-architect"]).toMatch(
+      /^(file:(\.\/|\.\.\/)\S+|latest|[\^~]?\d+\.\d+\.\d+)$/
+    );
   });
 
   test("ships no plugin entrypoint", async () => {
