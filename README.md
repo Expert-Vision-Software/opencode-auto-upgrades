@@ -1,44 +1,45 @@
 # opencode-auto-upgrades
 
-[![OpenCode plugin](https://img.shields.io/badge/opencode-plugin-blueviolet)](https://opencode.ai/v2/docs/plugins) [![npm version](https://img.shields.io/npm/v/opencode-auto-upgrades?color=cb3837&label=npm)](https://www.npmjs.com/package/opencode-auto-upgrades) [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e)](LICENSE.md) [![Runtime](https://img.shields.io/badge/Runtime-Markdown--only-lightgrey)](#what-you-get-) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Expert-Vision-Software/opencode-auto-upgrades)
+[![OpenCode plugin](https://img.shields.io/badge/opencode-plugin-blueviolet)](https://opencode.ai/v2/docs/plugins) [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e)](LICENSE.md) [![Runtime](https://img.shields.io/badge/Runtime-Markdown--only-lightgrey)](#what-you-get-) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Expert-Vision-Software/opencode-auto-upgrades)
 
-Quality gates for AI coding agents. 🚦
-
-**opencode-auto-upgrades** ships two OpenCode agent skills — *test-baselining* and *regression-checking* — packaged as an installable OpenCode plugin (`opencode-auto-qcgates`). It closes the gap between "the model said it's done" and "the tests prove it's done."
+Safe, sensible, and aggressive dependency upgrades for TypeScript/JavaScript codebases (npm, pnpm, Bun workspaces) — run as baseline-gated rounds by an OpenCode agent. 🚦
 
 ## Why this exists ✨
 
-Autonomous agents declare tasks complete without evidence. This plugin gives them a standard framework to:
-
-- **Run tests and freeze baselines** of key metrics — counts, pass rates, coverage, build time, artifact size
-- **Gate changes against thresholds** so regressions are caught before they land
-- **Answer quality questions in plain language**: "Did we break anything?", "Is it safe to commit?", "Should I proceed?" — with structured `PROCEED` / `STOP` / `REVIEW` decision signals
+Autonomous dependency upgrades usually mean either timid patch-only bumps or blind jumps to `latest`. **opencode-auto-upgrades** runs upgrade rounds instead: every outdated package is categorized by risk, the risky ones are researched *before* they are touched, changes land in revertable batches, and each round is proven against your project's frozen test baseline before it counts as done.
 
 ## What you get 🧰
 
-- **`test-baselining` skill** — test execution, metric capture, threshold evaluation, baseline updates. Reads `testing-protocol.md` and `testing-baseline.xml` from your project root; the single source of truth, re-read every run.
-- **`regression-checking` skill** — decision layer on top: translates metric deltas into risk assessments humans can scan and signals agents can act on.
-- **Slash commands** — `/test-baseline` (`init|eval|update`, default `eval`) and `/regression-check` (`status` for a quick cached check).
+- **Three upgrade tiers, selected per run**
+  - **safe** — in-range updates only (patch + minor within declared ranges)
+  - **sensible** — out-of-range minors pinned up within the same major; lands only with high confidence of zero functional changes
+  - **aggressive** — majors/latest stable; research-gated, ≥50% confidence, mechanical source adaptation allowed
+- **Baseline-gated rounds** — a round does not start without a valid baseline at the current HEAD; verification results feed the PROCEED / STOP / REVIEW decision layer
+- **Research before risk** — every major (and any minor spanning ≥3 upstream versions) gets a research pass with `SAFE` / `ADAPT` / `BLOCKED` verdicts before bumping
+- **Atomic coupled bumps** — exact-pinned scope families (e.g. `@mastra/*`) move together in one commit, never partially
+- **Deferral ledger** — every "not now" carries a written re-check trigger; hard "never again" opt-outs persist to a per-project config file
+- **Git discipline** — branch per round, one commit per batch, nothing pushed and no PRs opened unless asked
 - **Works under any dot-agents-compatible host** — OpenCode, Claude Code, and friends. Skill bodies are agent-agnostic; host bindings live in a dedicated section.
+
+## Dependencies (required) 🔗
+
+This package **hard-depends on the quality-gate skills `test-baselining` and `regression-checking`** — a round refuses to start without a valid, recent baseline. They are not part of this package; they are delivered by the **opencode-auto-qcgates** plugin:
+
+```bash
+bunx opencode-auto-qcgates@latest install --scope global
+```
+
+The copies under `.opencode/skills/` in this repo are that dependency's vendored install for this dev checkout, not part of the deliverable.
 
 ## Install 🔌
 
-Add the plugin to your project's `.opencode/opencode.json`:
-
-```json
-{
-  "plugins": ["opencode-auto-qcgates@latest"]
-}
-```
-
-Then run `/test-baseline init` to build your project's protocol and first baseline.
+This is a Markdown-first package. Copy the dependency-upgrade skill, command, and agent definitions from `.opencode/` into your global `~/.config/opencode/` (or a project's `.opencode/`), then install the required quality-gate skills as shown above.
 
 ## Best time to use it ✅
 
-- Before commit or push — verify quality before proposing changes
-- After an agent task completes — run the regression check before reporting done
-- On large change surfaces — when the diff exceeds your protocol's threshold
-- During agent oversight — decide whether to let the agent continue or fix regressions first
+- When `bun outdated` / `npm outdated` shows a backlog and you want it worked in safe batches
+- After a major framework release — research first, adapt mechanically, verify against the baseline
+- Before a long-lived branch merge — prove the upgraded tree matches the old tree's behavior
 
 ## Contributing 🤝
 
